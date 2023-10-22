@@ -27,14 +27,33 @@ struct ContentView: View {
         Button("Click Me") {
             saveData()
         }
-        .alert(error?.localizedDescription ?? "Error", isPresented: Binding(value: $error)) {
+        .alert(error?.localizedDescription ?? "Error", isPresented: Binding(value: $error), actions: {
             Button("Ok") {
                 
             }
-        }
+        }, message: {
+            Text("Message goes here!")
+        })
     }
     
-    enum MyCustomError: Error, LocalizedError {
+//    enum MyCustomError: Error, LocalizedError {
+//        case noInternetConnection
+//        case dataNotFount
+//        case urlError(error: Error)
+//        
+//        var errorDescription: String? {
+//            switch self {
+//            case .noInternetConnection:
+//                return "Please check your internet connection and try again."
+//            case .dataNotFount:
+//                return "There was an error loading data. Please try again!"
+//            case .urlError(error: let error):
+//                return "Erorr: \(error.localizedDescription)"
+//            }
+//        }
+//    }
+    
+    enum MyCustomAlert: Error, LocalizedError {
         case noInternetConnection
         case dataNotFount
         case urlError(error: Error)
@@ -59,7 +78,7 @@ struct ContentView: View {
         } else {
             //let myError: Error = URLError(.badURL)
             //errorTitle = "An error occured!"
-            let myError: Error = MyCustomError.noInternetConnection
+            let myError: Error = MyCustomAlert.noInternetConnection
             error = myError
         }
     }
