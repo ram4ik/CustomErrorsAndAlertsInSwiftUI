@@ -28,14 +28,41 @@ struct ContentView: View {
             saveData()
         }
         .alert(alert?.title ?? "Error", isPresented: Binding(value: $alert), actions: {
-            Button("Ok") {
-                
+            if let alert {
+                getButtonsForAlert(alert: alert)
             }
         }, message: {
             if let subtitle = alert?.subtitle {
                 Text(subtitle)
             }
         })
+    }
+    
+    @ViewBuilder
+    private func getButtonsForAlert(alert: MyCustomAlert) -> some View {
+        switch alert {
+        case .noInternetConnection:
+            Button("Ok") {
+                
+            }
+            Button("Retry") {
+                
+            }
+        case .dataNotFount:
+            Button("Ok") {
+                
+            }
+            Button("Retry") {
+                
+            }
+            Button("Delete", role: .destructive) {
+                
+            }
+        case .urlError(let error):
+            Button("Ok") {
+                
+            }
+        }
     }
     
 //    enum MyCustomError: Error, LocalizedError {
