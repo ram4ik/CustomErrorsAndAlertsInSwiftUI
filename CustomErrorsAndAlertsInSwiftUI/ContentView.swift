@@ -21,13 +21,13 @@ extension Binding where Value == Bool {
 }
 
 struct ContentView: View {
-    @State private var errorTitle: String? = nil
+    @State private var error: Error? = nil
     
     var body: some View {
         Button("Click Me") {
             saveData()
         }
-        .alert(errorTitle ?? "Error", isPresented: Binding(value: $errorTitle)) {
+        .alert(error?.localizedDescription ?? "Error", isPresented: Binding(value: $error)) {
             Button("Ok") {
                 
             }
@@ -40,7 +40,9 @@ struct ContentView: View {
         if isSuccessful {
             
         } else {
-            errorTitle = "An error occured!"
+            let myError: Error = URLError(.badURL)
+            //errorTitle = "An error occured!"
+            error = myError
         }
     }
 }
