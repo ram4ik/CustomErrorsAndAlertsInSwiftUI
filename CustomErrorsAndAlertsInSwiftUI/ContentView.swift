@@ -21,18 +21,20 @@ extension Binding where Value == Bool {
 }
 
 struct ContentView: View {
-    @State private var error: Error? = nil
+    @State private var alert: MyCustomAlert? = nil
     
     var body: some View {
         Button("Click Me") {
             saveData()
         }
-        .alert(error?.localizedDescription ?? "Error", isPresented: Binding(value: $error), actions: {
+        .alert(alert?.title ?? "Error", isPresented: Binding(value: $alert), actions: {
             Button("Ok") {
                 
             }
         }, message: {
-            Text("Message goes here!")
+            if let subtitle = alert?.subtitle {
+                Text(subtitle)
+            }
         })
     }
     
@@ -68,6 +70,28 @@ struct ContentView: View {
                 return "Erorr: \(error.localizedDescription)"
             }
         }
+        
+        var title: String {
+            switch self {
+            case .noInternetConnection:
+                return "No Internet Connection"
+            case .dataNotFount:
+                return "No Data"
+            case .urlError:
+                return "Error"
+            }
+        }
+        
+        var subtitle: String? {
+            switch self {
+            case .noInternetConnection:
+                return "Please check your internet connection and try again."
+            case .dataNotFount:
+                return nil
+            case .urlError(error: let error):
+                return "Erorr: \(error.localizedDescription)"
+            }
+        }
     }
     
     private func saveData() {
@@ -78,8 +102,8 @@ struct ContentView: View {
         } else {
             //let myError: Error = URLError(.badURL)
             //errorTitle = "An error occured!"
-            let myError: Error = MyCustomAlert.noInternetConnection
-            error = myError
+            //let myError: Error = MyCustomAlert.noInternetConnection
+            alert = .noInternetConnection
         }
     }
 }
