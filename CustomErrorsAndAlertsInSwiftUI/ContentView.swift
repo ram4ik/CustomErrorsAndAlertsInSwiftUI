@@ -34,14 +34,32 @@ struct ContentView: View {
         }
     }
     
+    enum MyCustomError: Error, LocalizedError {
+        case noInternetConnection
+        case dataNotFount
+        case urlError(error: Error)
+        
+        var errorDescription: String? {
+            switch self {
+            case .noInternetConnection:
+                return "Please check your internet connection and try again."
+            case .dataNotFount:
+                return "There was an error loading data. Please try again!"
+            case .urlError(error: let error):
+                return "Erorr: \(error.localizedDescription)"
+            }
+        }
+    }
+    
     private func saveData() {
         let isSuccessful: Bool = false
         
         if isSuccessful {
             
         } else {
-            let myError: Error = URLError(.badURL)
+            //let myError: Error = URLError(.badURL)
             //errorTitle = "An error occured!"
+            let myError: Error = MyCustomError.noInternetConnection
             error = myError
         }
     }
